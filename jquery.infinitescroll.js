@@ -8,7 +8,6 @@
    + version 2.1.0
    + Copyright 2011/12 Paul Irish & Luke Shumard
    + Licensed under the MIT license
-
    + Documentation: http://infinite-scroll.com/
 */
 
@@ -64,6 +63,8 @@
         animate: false,
         pathParse: undefined,
         dataType: 'html',
+        data: {},
+        type: 'GET',
         appendCallback: true,
         bufferPx: 40,
         errorCallback: function () { },
@@ -582,7 +583,9 @@
                     $.ajax({
                         // params
                         url: desturl,
-                        dataType: opts.dataType,
+						type: opts.type, 
+                        dataType: opts.dataType,	
+                        data: opts.data,
                         complete: function infscr_ajax_callback(jqXHR, textStatus) {
                             condition = (typeof (jqXHR.isResolved) !== 'undefined') ? (jqXHR.isResolved()) : (textStatus === 'success' || textStatus === 'notmodified');
                             if (condition) {
@@ -597,9 +600,10 @@
                 case 'json':
                     instance._debug('Using ' + (method.toUpperCase()) + ' via $.ajax() method');
                     $.ajax({
-                        dataType: 'json',
-                        type: 'GET',
                         url: desturl,
+                        type: opts.type, 
+                        data: opts.data,
+                        dataType: 'json',
                         success: function (data, textStatus, jqXHR) {
                             condition = (typeof (jqXHR.isResolved) !== 'undefined') ? (jqXHR.isResolved()) : (textStatus === 'success' || textStatus === 'notmodified');
                             if (opts.appendCallback) {
@@ -708,18 +712,13 @@
         ----------------------------
         Infinite Scroll function
         ----------------------------
-
         Borrowed logic from the following...
-
         jQuery UI
         - https://github.com/jquery/jquery-ui/blob/master/ui/jquery.ui.widget.js
-
         jCarousel
         - https://github.com/jsor/jcarousel/blob/master/lib/jquery.jcarousel.js
-
         Masonry
         - https://github.com/desandro/masonry/blob/master/jquery.masonry.js
-
 */
 
     $.fn.infinitescroll = function infscr_init(options, callback) {
